@@ -1,4 +1,5 @@
 // src/components/AdminDashboard.jsx
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -18,7 +19,8 @@ const AdminDashboard = () => {
       <aside className="sidebar">
         <div className="sidebar-header">
             <span className="logo-name">WorkshopFlow</span>
-            <Link to="/workshops" className="nav-link">Workshops</Link>
+            <Link to="/" className="nav-link">Workshops</Link>
+            
         </div>
 
         <nav className="sidebar-nav">
