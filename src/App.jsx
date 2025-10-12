@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 
-// Components (All component files must be explicitly defined in ./components/)
+// Components
 import Header from './components/Header';
 import SearchAndFilter from './components/SearchAndFilter';
 import WorkshopList from './components/WorkshopList';
@@ -10,8 +10,9 @@ import RegisterPage from './components/RegisterPage';
 import AdminDashboard from './components/AdminDashboard';
 import WorkshopDetailPage from './components/WorkshopDetailPage';
 import MyRegistrationsPage from './components/MyRegistrationsPage'; 
+import ExamPage from './components/ExamPage'; // New Import for Quiz Page
 
-// Context (The AuthProvider must be in ./context/AuthContext.jsx)
+// Context
 import { AuthProvider } from './context/AuthContext'; 
 
 // Global Stylesheet
@@ -40,22 +41,17 @@ const Layout = () => {
     const location = useLocation();
     
     // Check if the route is dedicated to the admin dashboard
-    const isAdminRoute = location.pathname.toLowerCase().startsWith('/admin');
-    
-    // 1. Admin Dashboard Path: Renders only the Dashboard component 
+    const isAdminRoute = location.pathname.startsWith('/admin');
+
+    // 1. Admin Path: Renders only the AdminDashboard, hiding the main Header
     if (isAdminRoute) {
         return (
-            <main>
-                <Routes>
-                    {/* Admin Dashboard Route */}
-                    <Route path="/admin" element={<AdminDashboard />} />
-                    {/* Allows for admin/settings or other sub-routes */}
-                    <Route path="/admin/*" element={<AdminDashboard />} /> 
-                </Routes>
-            </main>
+            <Routes>
+                <Route path="/admin" element={<AdminDashboard />} />
+            </Routes>
         );
     }
-
+    
     // 2. Default Paths: Renders the standard Header and the main content area
     return (
         <>
@@ -66,11 +62,14 @@ const Layout = () => {
                     <Route path="/" element={<WorkshopCatalogPage />} />
                     <Route path="/workshops/:id" element={<WorkshopDetailPage />} />
                     
+                    {/* NEW ROUTE FOR EXAM/QUIZ */}
+                    <Route path="/exam/:workshopId/module/:moduleId" element={<ExamPage />} /> 
+                    
                     {/* Authentication Routes */}
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
                     
-                    {/* Student Dashboard Route (Only visible to students after login via conditional logic in Header.jsx) */}
+                    {/* Student Dashboard Route */}
                     <Route path="/my-registrations" element={<MyRegistrationsPage />} />
                     
                     {/* Catch-all for 404 */}
