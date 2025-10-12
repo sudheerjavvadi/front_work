@@ -1471,3 +1471,101 @@ body {
     font-weight: 600;
     transition: transform 0.3s ease-out;
 }
+/* ------------------------------------------- */
+/* --- NEW STYLES FOR VIDEO PLAYER MODAL --- */
+/* ------------------------------------------- */
+
+/* Lesson Item Modification */
+.lesson-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    font-size: 0.95em;
+    /* Add a small hover effect to video lessons */
+}
+
+.lesson-type-video:hover {
+    background-color: #f7f7f7;
+    border-radius: 4px;
+    padding-left: 5px;
+}
+
+/* Play Button Style */
+.play-video-button {
+    background-color: #f4f4f4;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    padding: 5px 15px;
+    border-radius: 5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    margin-left: auto; /* Push to the right */
+}
+
+.play-video-button:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Modal Overlay */
+.video-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it covers everything */
+}
+
+/* Modal Content (The box containing the player) */
+.video-modal-content {
+    background: black;
+    padding: 20px;
+    border-radius: 10px;
+    position: relative;
+    max-width: 90%;
+    width: 800px; /* Standard video width */
+    max-height: 90vh;
+}
+
+/* Close Button */
+.video-modal-close {
+    position: absolute;
+    top: -35px;
+    right: -35px;
+    background: none;
+    color: white;
+    border: none;
+    font-size: 3em;
+    cursor: pointer;
+    line-height: 1;
+    z-index: 1001;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.video-modal-close:hover {
+    opacity: 1;
+}
+
+/* Iframe Wrapper (for aspect ratio) */
+.video-player-wrapper {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio (9 / 16 * 100) */
+}
+
+.video-player-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 6px;
+}
