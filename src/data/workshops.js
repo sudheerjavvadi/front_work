@@ -36,7 +36,8 @@ const workshopsData = [
     detailsTab: "Details",
     instructorTab: "Instructor",
     modulesTab: "Modules"
-  },  {
+  },  
+  {
     id: 'wk-3',
     audience: "Beginners",
     title: "UI Design Fundamentals",
@@ -54,6 +55,7 @@ const workshopsData = [
     instructorTab: "Instructor",
     modulesTab: "Modules"
   },
+  
   // ... (You would add similar detail fields for wk-3, wk-4, and any new workshops)
   // ...
 ];
