@@ -5,10 +5,10 @@ import { Link } from 'react-router-dom';
 const adminWorkshopsData = [
   { title: "Advanced React Patterns", category: "Technology", schedule: "Aug 15, 2024, 7:30 PM" },
   { title: "UI/UX Design Fundamentals", category: "Arts", schedule: "Aug 20, 2024, 11:50 PM" },
-  { title: "Growth Hacking for Startups", category: "Marketing", schedule: "Sep 1, 2024, 9:30 PM" },
-  { title: "Creative Writing: Finding Your Voice", category: "Creative Writing", schedule: "Sep 6, 2024, 12:30 AM" },
-  { title: "Intro to Machine Learning", category: "Technology", schedule: "Sep 10, 2024, 7:30 PM" },
-  { title: "Personal Finance & Investing 101", category: "Finance", schedule: "Sep 12, 2024, 10:30 PM" },
+  // { title: "Growth Hacking for Startups", category: "Marketing", schedule: "Sep 1, 2024, 9:30 PM" },
+  // { title: "Creative Writing: Finding Your Voice", category: "Creative Writing", schedule: "Sep 6, 2024, 12:30 AM" },
+  // { title: "Intro to Machine Learning", category: "Technology", schedule: "Sep 10, 2024, 7:30 PM" },
+  // { title: "Personal Finance & Investing 101", category: "Finance", schedule: "Sep 12, 2024, 10:30 PM" },
 ];
 
 const AdminDashboard = () => {

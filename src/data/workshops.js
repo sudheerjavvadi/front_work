@@ -24,7 +24,24 @@ const workshopsData = [
     audience: "Beginners",
     title: "UI/UX Design Fundamentals",
     topic: "Arts",
-    image: "/images/desk-setup.jpg",
+    image: "/images/desk-screen.png",
+    
+    // Details for the detail page
+    scheduleDate: "Tuesday, August 20, 2024",
+    scheduleTime: "11:50 AM",
+    duration: "90 minutes",
+    instructorName: "Jane Smith",
+    instructorTopic: "Design",
+    description: "Learn the core principles of UI and UX design, focusing on wireframing, prototyping, and user-centered design methodologies.",
+    detailsTab: "Details",
+    instructorTab: "Instructor",
+    modulesTab: "Modules"
+  },  {
+    id: 'wk-3',
+    audience: "Beginners",
+    title: "UI Design Fundamentals",
+    topic: "Arts",
+    image: "/images/desk-screen.png",
     
     // Details for the detail page
     scheduleDate: "Tuesday, August 20, 2024",
