@@ -1,19 +1,20 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 
+// Context
+// Note: Changed path to '../context/AuthContext' for consistency, though './context/AuthContext' may also work depending on the environment.
+import { AuthProvider } from './context/AuthContext'; 
+
 // Components
 import Header from './components/Header';
 import SearchAndFilter from './components/SearchAndFilter';
 import WorkshopList from './components/WorkshopList';
 import LoginPage from './components/LoginPage'; 
 import RegisterPage from './components/RegisterPage'; 
-import AdminDashboard from './components/AdminDashboard';
+import AdminDashboard from './components/AdminDashboard'; 
 import WorkshopDetailPage from './components/WorkshopDetailPage';
 import MyRegistrationsPage from './components/MyRegistrationsPage'; 
-import ExamPage from './components/ExamPage'; // New Import for Quiz Page
-
-// Context
-import { AuthProvider } from './context/AuthContext'; 
+import ExamPage from './components/ExamPage'; 
 
 // Global Stylesheet
 import './index.css'; 
@@ -27,50 +28,49 @@ const WorkshopCatalogPage = () => (
       <h1>Workshop Catalog</h1>
       <p>Find the perfect workshop to advance your skills.</p>
     </section>
-    <SearchAndFilter />
+    
     <WorkshopList />
   </>
 );
 
 /**
  * Layout component: Manages conditional rendering of the Header
- * based on the current route (hides Header for the Admin Dashboard).
+ * and applies conditional CSS classes to the main content wrapper for full-width admin view.
  */
 const Layout = () => {
     // Hooks to determine the current path
     const location = useLocation();
     
-    // Check if the route is dedicated to the admin dashboard
+    // Check if the route starts with /admin (to cover /admin, /admin/create, etc.)
     const isAdminRoute = location.pathname.startsWith('/admin');
 
-    // 1. Admin Path: Renders only the AdminDashboard, hiding the main Header
-    if (isAdminRoute) {
-        return (
-            <Routes>
-                <Route path="/admin" element={<AdminDashboard />} />
-            </Routes>
-        );
-    }
-    
-    // 2. Default Paths: Renders the standard Header and the main content area
+    // Conditional class name: use 'main-content-full-width' for admin, otherwise use default 'main-content'
+    const mainContentClass = isAdminRoute ? 'main-content-full-width' : 'main-content';
+
     return (
         <>
-            <Header /> 
-            <main className="main-content">
+            {/* Header is hidden only on the Admin Dashboard */}
+            {!isAdminRoute && <Header />} 
+            
+            <main className={mainContentClass}>
                 <Routes>
                     {/* Public/Catalog Routes */}
                     <Route path="/" element={<WorkshopCatalogPage />} />
                     <Route path="/workshops/:id" element={<WorkshopDetailPage />} />
                     
-                    {/* NEW ROUTE FOR EXAM/QUIZ */}
+                    {/* Exam/Quiz Route */}
                     <Route path="/exam/:workshopId/module/:moduleId" element={<ExamPage />} /> 
                     
                     {/* Authentication Routes */}
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
                     
-                    {/* Student Dashboard Route */}
+                    {/* Student Dashboard Route (Protected) */}
                     <Route path="/my-registrations" element={<MyRegistrationsPage />} />
+                    
+                    {/* Admin Dashboard Route (Protected, uses nested routing) */}
+                    {/* The /* allows AdminDashboard to handle /admin/create, /admin/settings etc. */}
+                    <Route path="/admin/*" element={<AdminDashboard />} />
                     
                     {/* Catch-all for 404 */}
                     <Route path="*" element={<h1>404 Not Found</h1>} />

@@ -664,13 +664,13 @@ body {
 }
 
 /* Responsive adjustments for sidebar/dashboard */
-@media (max-width: 900px) {
+@media (max-width: 1200px) {
   .sidebar {
     width: 200px;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: none) {
   .admin-dashboard-layout {
     flex-direction: column;
   }
@@ -1749,4 +1749,47 @@ body {
 
 .retake-exam-button:hover {
     background-color: #fb8c00;
+}
+/* src/index.css (ADD THESE STYLES or CONFIRM THEY ARE PRESENT) */
+
+/* 1. Default content wrapper styles (already exists, restricts width) */
+.main-content {
+  flex-grow: 1;
+  max-width: 1280px; /* This is what causes the whitespace on the sides */
+  margin: 0 auto;
+  padding: 20px 40px; 
+}
+
+/* 2. Full-Width Override (Applies only to Admin Dashboard) */
+.main-content-full-width {
+  max-width: none; /* REMOVES the max-width restriction */
+  margin: 0;      /* REMOVES auto margins */
+  padding: 0;     /* REMOVES padding from the main wrapper */
+  flex-grow: 1;
+}
+
+/* 3. Dashboard Container Styles (The content *inside* the main wrapper) */
+.admin-dashboard-layout {
+  display: flex;
+  width: 100%; /* Should span the full width of the parent (main-content-full-width) */
+  min-height: 100vh; /* Make sure it takes the full viewport height */
+}
+
+/* 4. Sidebar and Content (Add these if they are not present) */
+.sidebar {
+  width: 250px; /* Or whatever width you want for the sidebar */
+  background-color: #f7f7f7; /* Light background for the sidebar */
+  padding: 20px;
+  flex-shrink: 0; /* Prevents sidebar from shrinking */
+}
+
+.dashboard-content {
+  flex-grow: 1; /* Takes up the rest of the available width */
+  padding: 40px; /* Add padding *inside* the main content area */
+}
+
+.dashboard-header-bar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
 }

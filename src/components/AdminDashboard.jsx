@@ -1,18 +1,19 @@
-// src/components/AdminDashboard.jsx
+// src/components/AdminDashboard.jsx (CORRECTED)
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext'; // 💡 IMPORT useAuth
 
 const adminWorkshopsData = [
   { title: "Advanced React Patterns", category: "Technology", schedule: "Aug 15, 2024, 7:30 PM" },
   { title: "UI/UX Design Fundamentals", category: "Arts", schedule: "Aug 20, 2024, 11:50 PM" },
-  // { title: "Growth Hacking for Startups", category: "Marketing", schedule: "Sep 1, 2024, 9:30 PM" },
-  // { title: "Creative Writing: Finding Your Voice", category: "Creative Writing", schedule: "Sep 6, 2024, 12:30 AM" },
-  // { title: "Intro to Machine Learning", category: "Technology", schedule: "Sep 10, 2024, 7:30 PM" },
-  // { title: "Personal Finance & Investing 101", category: "Finance", schedule: "Sep 12, 2024, 10:30 PM" },
+  // ... (rest of mock data remains the same)
 ];
 
 const AdminDashboard = () => {
+  // 💡 Use the logout function from your context
+  const { logout } = useAuth();
+
   return (
     <div className="admin-dashboard-layout">
       {/* Sidebar */}
@@ -20,7 +21,6 @@ const AdminDashboard = () => {
         <div className="sidebar-header">
             <span className="logo-name">WorkshopFlow</span>
             <Link to="/" className="nav-link">Workshops</Link>
-            
         </div>
 
         <nav className="sidebar-nav">
@@ -41,15 +41,21 @@ const AdminDashboard = () => {
       {/* Main Content */}
       <main className="dashboard-content">
         <div className="dashboard-header-bar">
-          <Link to="/" className="logout-button">Logout</Link>
+          {/* 💡 REPLACE Link with a button that calls logout() */}
+          <button 
+             onClick={logout} 
+             className="logout-button"
+          >
+             Logout
+          </button>
         </div>
-        
+
         <h2 className="dashboard-title">Admin Dashboard</h2>
         <div className="dashboard-section-header">
           <h3>Manage Workshops</h3>
           <button className="create-workshop-button">Create Workshop</button>
         </div>
-        
+
         {/* Workshop Table */}
         <table className="workshop-table">
           <thead>

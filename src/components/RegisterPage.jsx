@@ -1,13 +1,29 @@
-// src/components/RegisterPage.jsx
-import React from 'react';
+// src/components/RegisterPage.jsx (CORRECTED)
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext'; 
 
 const RegisterPage = () => {
+  // 1. Initialize state for form inputs
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [selectedRole, setSelectedRole] = useState('student'); 
+  
+  const { login } = useAuth();
+
+  const handleRegistration = (e) => {
+    e.preventDefault(); // CRITICAL: Prevents default page refresh
+    
+    // Simulate registration, then log the user in
+    console.log('Simulated Registration:', { fullName, email, password, role: selectedRole });
+    login(selectedRole); 
+  };
+
   return (
-    <div className="login-page-container"> {/* Reusing the layout container style */}
+    <div className="login-page-container"> 
       <div className="login-card">
         <div className="login-header">
-          {/* Purple Book/Icon placeholder */}
           <div className="login-icon">📖</div> 
           <h2>Create an Account</h2>
           <p className="login-subtitle">
@@ -15,47 +31,66 @@ const RegisterPage = () => {
           </p>
         </div>
 
-        <form className="login-form">
-          {/* Full Name Field */}
+        {/* 2. ADD onSubmit handler */}
+        <form className="login-form" onSubmit={handleRegistration}> 
+          
           <label htmlFor="fullName">Full Name</label>
           <input 
             type="text" 
             id="fullName" 
             placeholder="John Doe"
+            value={fullName} // ADDED: Value binding
+            onChange={(e) => setFullName(e.target.value)} // ADDED: Change handler
+            required
           />
 
-          {/* Email Field */}
           <label htmlFor="email">Email</label>
           <input 
             type="email" 
             id="email" 
             placeholder="m@example.com"
+            value={email} // ADDED: Value binding
+            onChange={(e) => setEmail(e.target.value)} // ADDED: Change handler
+            required
           />
 
-          {/* Password Field */}
           <label htmlFor="password">Password</label>
           <input 
             type="password" 
             id="password" 
             placeholder=""
+            value={password} // ADDED: Value binding
+            onChange={(e) => setPassword(e.target.value)} // ADDED: Change handler
+            required
           />
 
-          {/* Role Selection (NEW REQUIREMENT) */}
+          {/* Role Selection (Controlled) */}
           <div className="role-selection">
             <label>Role</label>
             <div className="roles">
               <label>
-                <input type="radio" name="role" value="student" defaultChecked />
+                <input 
+                  type="radio" 
+                  name="role" 
+                  value="student" 
+                  checked={selectedRole === 'student'}
+                  onChange={() => setSelectedRole('student')}
+                />
                 Student
               </label>
               <label>
-                <input type="radio" name="role" value="admin" />
+                <input 
+                  type="radio" 
+                  name="role" 
+                  value="admin"
+                  checked={selectedRole === 'admin'}
+                  onChange={() => setSelectedRole('admin')}
+                />
                 Admin
               </label>
             </div>
           </div>
 
-          {/* Register Button */}
           <button type="submit" className="login-submit-button">
             Create Account
           </button>
@@ -66,7 +101,9 @@ const RegisterPage = () => {
         </p>
       </div>
 
-      {/* Footer is placed outside the card in index.css using fixed positioning */}
+      <footer className="login-footer">
+        © 2025 WorkshopFlow. All rights reserved.
+      </footer>
     </div>
   );
 };
