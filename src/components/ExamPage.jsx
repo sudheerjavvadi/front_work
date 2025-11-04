@@ -39,6 +39,13 @@ const mockExamData = {
             correctAnswer: 'Handling navigation' 
         },
     ]
+    // Additional mock exam for diversity
+    // (In a real app, each module would have its own exam data)
+    // Here we reuse the same structure for simplicity
+
+    
+    
+    
 };
 // -----------------
 

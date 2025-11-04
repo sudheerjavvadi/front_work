@@ -51,7 +51,7 @@ const workshopsData = [
                     videoId: 'QpJSf-3TPfA' 
                 },
                 { type: 'quiz', name: 'Module 2 Quiz', duration: '10 questions' },
-                { type: 'quiz', name: 'Module 2 Quiz', duration: '10 questions' },
+                
             ]
         },
     ]
