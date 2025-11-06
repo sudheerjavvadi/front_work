@@ -145,6 +145,54 @@ const workshopsData = [
                     videoId: 'QpJSf-3TPfA' 
                 },
                 { type: 'quiz', name: 'Module 2 Quiz', duration: '8 questions' },
+                
+            ]
+        },
+    ]
+  },
+  {
+    id: 'wk-4',
+    audience: "Beginners",
+    title: "UX Design Fundamentals",
+    topic: "Arts",
+    image: "/images/desk-screen.png",
+    
+    // Details for the detail page
+    scheduleDate: "Tuesday, August 20, 2024",
+    scheduleTime: "11:50 AM",
+    duration: "90 minutes",
+    instructorName: "Jane Smith",
+    instructorTopic: "Design",
+    description: "Learn the core principles of UI design, focusing on typography, color theory, and visual hierarchy.",
+    detailsTab: "Details",
+    instructorTab: "Instructor",
+    modulesTab: "Modules",
+    
+    // Modules and Lessons (with video IDs)
+    modules: [
+        { 
+            title: 'Module 1: Color and Typography', 
+            lessons: [
+                { 
+                    type: 'video', 
+                    name: 'Color Theory for Web', 
+                    duration: '15 min',
+                    videoId: 'QpJSf-3TPfA' 
+                },
+                { type: 'article', name: 'Choosing the Right Font Pairings', duration: '10 min read' },
+            ]
+        },
+        { 
+            title: 'Module 2: Layout and Grids', 
+            lessons: [
+                { 
+                    type: 'video', 
+                    name: 'Applying the 8-Point Grid System', 
+                    duration: '20 min',
+                    videoId: 'QpJSf-3TPfA' 
+                },
+                { type: 'quiz', name: 'Module 2 Quiz', duration: '8 questions' },
+                
             ]
         },
     ]

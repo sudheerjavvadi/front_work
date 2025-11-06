@@ -1,53 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import workshopsData from '../data/workshops'; // Central data source
-
-// --- MOCK DATA ---
+import { getExam } from '../data/exams';
 const PASSING_SCORE = 70; // 70% to pass
-const mockExamData = {
-    id: 'e1',
-    title: 'Module Quiz: Assessment',
-    questions: [
-        { 
-            id: 'q1', 
-            text: 'Which hook manages side effects in functional components?', 
-            options: ['useState', 'useContext', 'useEffect', 'useMemo'], 
-            correctAnswer: 'useEffect' 
-        },
-        { 
-            id: 'q2', 
-            text: 'What is the primary use of the `useState` hook?', 
-            options: ['Routing', 'State management', 'API fetching', 'DOM manipulation'], 
-            correctAnswer: 'State management' 
-        },
-        { 
-            id: 'q3', 
-            text: 'When should you use `useMemo`?', 
-            options: ['To memoize function calls', 'To manage side effects', 'To manage state', 'To handle routing'], 
-            correctAnswer: 'To memoize function calls' 
-        },
-        { 
-            id: 'q4', 
-            text: 'What does JSX stand for?', 
-            options: ['JavaScript XML', 'JavaScript Syntax Extension', 'JSON Xpath', 'Java XML'], 
-            correctAnswer: 'JavaScript XML' 
-        },
-        { 
-            id: 'q5', 
-            text: 'What is the purpose of `react-router-dom`?', 
-            options: ['State management', 'Styling components', 'Handling navigation', 'API calls'], 
-            correctAnswer: 'Handling navigation' 
-        },
-    ]
-    // Additional mock exam for diversity
-    // (In a real app, each module would have its own exam data)
-    // Here we reuse the same structure for simplicity
-
-    
-    
-    
-};
-// -----------------
 
 // Helper to find the workshop details
 const findWorkshopById = (id) => workshopsData.find(w => w.id === id); 
@@ -61,15 +16,22 @@ const ExamPage = () => {
     const [answers, setAnswers] = useState({});
     const [submitted, setSubmitted] = useState(false);
     const [score, setScore] = useState(0);
-    
+    const [exam, setExam] = useState(null);
+
     // Total number of questions for score calculation
-    const totalQuestions = mockExamData.questions.length;
+    const totalQuestions = exam ? exam.questions.length : 0;
 
     // Load workshop details on component mount
     useEffect(() => {
         const foundWorkshop = findWorkshopById(workshopId);
         setWorkshop(foundWorkshop);
     }, [workshopId]);
+
+    // Load exam for the requested workshop & module
+    useEffect(() => {
+        const loadedExam = getExam(workshopId, moduleId);
+        setExam(loadedExam);
+    }, [workshopId, moduleId]);
 
     // Handler for selecting an answer
     const handleAnswerChange = (questionId, selectedOption) => {
@@ -87,13 +49,15 @@ const ExamPage = () => {
         if (submitted) return;
 
         let correctCount = 0;
-        mockExamData.questions.forEach(q => {
+        // guard if exam not loaded
+        const questions = exam ? exam.questions : [];
+        questions.forEach(q => {
             if (answers[q.id] === q.correctAnswer) {
                 correctCount++;
             }
         });
         
-        const calculatedScore = (correctCount / totalQuestions) * 100;
+        const calculatedScore = totalQuestions > 0 ? (correctCount / totalQuestions) * 100 : 0;
         setScore(calculatedScore);
         setSubmitted(true);
         
@@ -103,6 +67,20 @@ const ExamPage = () => {
             console.log(`Module ${moduleId} of Workshop ${workshopId} completed!`);
         }
         // ------------------------------------
+    };
+
+    // Navigate back to previous page when possible, otherwise fall back to the workshop page
+    const handleBack = () => {
+        try {
+            if (window.history.length > 1) {
+                navigate(-1);
+            } else {
+                navigate(`/workshops/${workshopId}`);
+            }
+        } catch (err) {
+            // Fallback navigation in case something unexpected happens
+            navigate(`/workshops/${workshopId}`);
+        }
     };
 
     if (!workshop) {
@@ -116,12 +94,12 @@ const ExamPage = () => {
             <div className="exam-card">
                 <div className="exam-header">
                     <h2>{workshop.title}</h2>
-                    <h3 className="exam-subtitle">Module {moduleId}: {mockExamData.title}</h3>
+                    <h3 className="exam-subtitle">Module {moduleId}: {exam ? exam.title : 'Loading...'}</h3>
                 </div>
 
                 <form className="exam-form" onSubmit={handleSubmit}>
                     <div className="exam-questions-list">
-                        {mockExamData.questions.map((q, qIndex) => (
+                        {exam && exam.questions.map((q, qIndex) => (
                             <div key={q.id} className="question-item">
                                 <p className="question-text">
                                     {qIndex + 1}. {q.text}
@@ -176,7 +154,7 @@ const ExamPage = () => {
                 {/* Footer Actions */}
                 <div className="exam-actions">
                     <button 
-                        onClick={() => navigate(`/workshops/${workshopId}`)} 
+                        onClick={handleBack} 
                         className="back-to-workshop-button"
                     >
                         ← Back to Workshop

@@ -199,11 +199,17 @@ const WorkshopDetailPage = () => {
                                                 ))}
                                             </ul>
                                             {/* Exam/Quiz button */}
+                                            {/*please change my exam link path to another name and link to previous link action*/}
                                             {moduleItem.lessons.some(l => l.type === 'quiz') && (
-                                                <Link to={`/exam/${workshop.id}/module/${index + 1}`} className="module-exam-link">
-                                                    Take Module Quiz →
+                                                <Link
+                                                    to={`/exam/${workshop.id}/module/${index + 1}`}
+                                                    state={{ from: `/workshops/${workshop.id}` }}
+                                                    className="module-exam-link"
+                                                >
+                                                    Take Module Assessment →
                                                 </Link>
                                             )}
+                                           
                                         </div>
                                     ))}
                                 </div>
