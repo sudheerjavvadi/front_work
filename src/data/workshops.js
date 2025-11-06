@@ -180,6 +180,7 @@ const workshopsData = [
                     videoId: 'QpJSf-3TPfA' 
                 },
                 { type: 'article', name: 'Choosing the Right Font Pairings', duration: '10 min read' },
+                { type: 'quiz', name: 'Module 2 Quiz', duration: '8 questions' },
             ]
         },
         { 

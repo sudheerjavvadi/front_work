@@ -48,11 +48,19 @@ const exams = {
         }
     },
     'wk-4': {
+        '1': {
+            id: 'wk4-m1',
+            title: 'Module 1 Quiz: Color & Typography',
+            questions: [
+                { id: 'w4-q1', text: 'What is the 8-point grid primarily used for?', options: ['Typography only', 'Consistent spacing', 'Routing', 'State management'], correctAnswer: 'Consistent spacing' },
+
+            ]
+        },
         '2': {
-            id: 'wk3-m2',
+            id: 'wk4-m2',
             title: 'Module 2 Quiz: Layouts & Grids',
             questions: [
-                { id: 'w3-q1', text: 'What is the 8-point grid primarily used for?', options: ['Typography only', 'Consistent spacing', 'Routing', 'State management'], correctAnswer: 'Consistent spacing' },
+                { id: 'w4-q1', text: 'What is the 8-point grid primarily used for?', options: ['Typography only', 'Consistent spacing', 'Routing', 'State management'], correctAnswer: 'Consistent spacing' },
                
             ]
         }
