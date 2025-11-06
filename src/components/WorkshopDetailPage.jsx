@@ -48,6 +48,9 @@ const WorkshopDetailPage = () => {
     const [showSuccess, setShowSuccess] = useState(false);
     const [showLoginError, setShowLoginError] = useState(false);
     const [playingVideoId, setPlayingVideoId] = useState(null); 
+    const [showCertModal, setShowCertModal] = useState(false);
+    const [certName, setCertName] = useState('');
+    const [allQuizzesCompleted, setAllQuizzesCompleted] = useState(false);
 
 
     useEffect(() => {
@@ -61,6 +64,32 @@ const WorkshopDetailPage = () => {
              console.error(`Workshop with ID ${id} not found.`);
         }
     }, [id]);
+
+    // Check if all quiz modules for this workshop are completed (stored in localStorage)
+    useEffect(() => {
+        const checkAllCompleted = () => {
+            try {
+                const key = 'completedModules';
+                const raw = localStorage.getItem(key);
+                const data = raw ? JSON.parse(raw) : {};
+                const completed = data[workshop?.id] || [];
+
+                const quizModuleIds = (workshop?.modules || [])
+                    .map((m, idx) => (m.lessons.some(l => l.type === 'quiz') ? String(idx + 1) : null))
+                    .filter(Boolean);
+
+                // If there are no quiz modules, treat as not ready for certificate
+                if (quizModuleIds.length === 0) return false;
+
+                return quizModuleIds.every(mid => completed.includes(mid));
+            } catch (err) {
+                console.error('Error checking completed modules', err);
+                return false;
+            }
+        };
+
+        setAllQuizzesCompleted(checkAllCompleted());
+    }, [workshop]);
 
     // Handle Registration Logic
     const handleRegister = () => {
@@ -114,6 +143,15 @@ const WorkshopDetailPage = () => {
                             >
                                 {registrationStatus ? '✔️ Already Registered' : 'Register Now'}
                             </button>
+                            {/* Generate Certificate button appears only after all quizzes are completed */}
+                            {allQuizzesCompleted && registrationStatus && (
+                                <button
+                                    className="generate-certificate-button"
+                                    onClick={() => setShowCertModal(true)}
+                                >
+                                    🎓 Generate Certificate
+                                </button>
+                            )}
                             {showLoginError && (
                                 <div className="login-error-message">
                                     <p className="error-title">Login Required</p>
@@ -243,6 +281,114 @@ const WorkshopDetailPage = () => {
                     <div className="success-message-toast">
                         <p className="toast-title">Registration Successful!</p>
                         <p className="toast-subtitle">You have been registered for **"{workshop.title}"**.</p>
+                    </div>
+                )}
+                {/* Certificate Modal */}
+                {showCertModal && (
+                    <div
+                        className="cert-modal-overlay"
+                        onClick={() => setShowCertModal(false)}
+                        style={{
+                            position: 'fixed',
+                            inset: 0,
+                            background: 'rgba(0,0,0,0.45)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            zIndex: 2000
+                        }}
+                    >
+                        <div
+                            className="cert-modal-content"
+                            onClick={e => e.stopPropagation()}
+                            style={{
+                                background: '#fff',
+                                borderRadius: 10,
+                                padding: 24,
+                                width: '92%',
+                                maxWidth: 640,
+                                boxShadow: '0 8px 30px rgba(0,0,0,0.15)',
+                                position: 'relative'
+                            }}
+                        >
+                            <button
+                                className="cert-modal-close"
+                                onClick={() => setShowCertModal(false)}
+                                style={{
+                                    position: 'absolute',
+                                    right: 12,
+                                    top: 12,
+                                    background: 'transparent',
+                                    border: 'none',
+                                    fontSize: 22,
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                &times;
+                            </button>
+                            <h3 style={{ marginTop: 4, marginBottom: 8 }}>Generate Certificate</h3>
+                            <p style={{ marginTop: 0, marginBottom: 12, color: '#444' }}>
+                                Enter the full name to appear on the certificate. This will be printed exactly as entered.
+                            </p>
+                            <label style={{ display: 'block', marginBottom: 8, fontSize: 13, color: '#333' }}>Full name</label>
+                            <input
+                                type="text"
+                                value={certName}
+                                onChange={e => setCertName(e.target.value)}
+                                placeholder="e.g. John Doe"
+                                className="cert-name-input"
+                                autoFocus
+                                style={{
+                                    width: '100%',
+                                    padding: '10px 12px',
+                                    fontSize: 16,
+                                    borderRadius: 6,
+                                    border: '1px solid #cfcfcf',
+                                    boxSizing: 'border-box',
+                                    marginBottom: 14
+                                }}
+                            />
+                            <div className="cert-modal-actions" style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
+                                <button
+                                    className="generate-certificate-confirm"
+                                    onClick={() => {
+                                        if (!certName.trim()) return alert('Please enter a name for the certificate.');
+
+                                        // Create a printable certificate in a new window
+                                        const win = window.open('', '_blank');
+                                        const issuedOn = new Date().toLocaleDateString();
+                                        const html = `<!doctype html><html><head><meta charset="utf-8"><title>Certificate of Completion</title><style>body{font-family:Arial,Helvetica,sans-serif;background:#f6f7fb;padding:40px} .cert{max-width:900px;margin:0 auto;border:12px solid #6a1b9a;padding:40px;background:#fff;text-align:center} .cert h1{font-size:36px;color:#6a1b9a;margin:10px 0} .cert .name{font-size:32px;font-weight:700;margin-top:20px} .cert .workshop{font-size:20px;margin-top:12px;color:#333} .cert .date{margin-top:22px;color:#555}</style></head><body><div class="cert"><h1>Certificate of Completion</h1><p>This is to certify that</p><div class="name">${certName}</div><div class="workshop">has successfully completed the workshop:<br/><strong>${workshop.title}</strong></div><div class="date">Issued on: ${issuedOn}</div></div><script>setTimeout(()=>{window.print();},500);</script></body></html>`;
+                                        win.document.write(html);
+                                        win.document.close();
+                                        setShowCertModal(false);
+                                    }}
+                                    style={{
+                                        padding: '10px 14px',
+                                        background: '#6a1b9a',
+                                        color: '#fff',
+                                        border: 'none',
+                                        borderRadius: 6,
+                                        cursor: 'pointer'
+                                    }}
+                                >
+                                    Generate & Print
+                                </button>
+                                <button
+                                    className="cert-modal-cancel"
+                                    onClick={() => setShowCertModal(false)}
+                                    style={{
+                                        padding: '10px 14px',
+                                        background: '#f3f3f3',
+                                        color: '#333',
+                                        border: '1px solid #ddd',
+                                        borderRadius: 6,
+                                        cursor: 'pointer'
+                                    }}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 )}
             </div>

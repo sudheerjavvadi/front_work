@@ -66,6 +66,22 @@ export const AuthProvider = ({ children }) => {
         // Filter out the workshop with the matching ID
         prevRegs.filter(w => w.id !== workshopId)
     );
+
+    // Also clear any locally stored completion state for this workshop so
+    // re-registering requires completing quizzes again before generating a certificate.
+    try {
+      const key = 'completedModules';
+      const raw = localStorage.getItem(key);
+      if (raw) {
+        const data = JSON.parse(raw);
+        if (data && data[workshopId]) {
+          delete data[workshopId];
+          localStorage.setItem(key, JSON.stringify(data));
+        }
+      }
+    } catch (err) {
+      console.error('Failed to clear completed modules for workshop', workshopId, err);
+    }
   };
 
   // The value exposed to consumers

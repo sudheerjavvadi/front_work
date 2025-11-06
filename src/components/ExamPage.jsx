@@ -65,6 +65,19 @@ const ExamPage = () => {
         if (calculatedScore >= PASSING_SCORE) {
             // In a real app, this would be an API call to save progress.
             console.log(`Module ${moduleId} of Workshop ${workshopId} completed!`);
+            try {
+                const key = 'completedModules';
+                const raw = localStorage.getItem(key);
+                const data = raw ? JSON.parse(raw) : {};
+                const mods = data[workshopId] || [];
+                if (!mods.includes(String(moduleId))) {
+                    mods.push(String(moduleId));
+                    data[workshopId] = mods;
+                    localStorage.setItem(key, JSON.stringify(data));
+                }
+            } catch (err) {
+                console.error('Failed to save module completion to localStorage', err);
+            }
         }
         // ------------------------------------
     };
