@@ -208,7 +208,19 @@ const WorkshopDetailPage = () => {
                         {activeTab === 'modules' && (
                             <div className="modules-tab-content">
                                 <h3 className="section-title">Learning Modules</h3>
-                                <div className="module-list">
+                                {!registrationStatus ? (
+                                    <div className="registration-required-message">
+                                        <h4>Registration Required</h4>
+                                        <p>Please register for this workshop to access the learning modules.</p>
+                                        <button 
+                                            onClick={handleRegister} 
+                                            className="register-button"
+                                        >
+                                            Register Now
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <div className="module-list">
                                     {/* CRASH FIX: This will now safely map over the modules from workshops.js */}
                                     {/* Using optional chaining '?' as an extra safeguard, though workshop.modules should be guaranteed */}
                                     {workshop.modules?.map((moduleItem, index) => (
@@ -258,6 +270,7 @@ const WorkshopDetailPage = () => {
                                         </div>
                                     ))}
                                 </div>
+                                )}
                             </div>
                         )}
                         
