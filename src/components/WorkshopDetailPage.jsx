@@ -266,7 +266,19 @@ const WorkshopDetailPage = () => {
                                                     Take Module Assessment →
                                                 </Link>
                                             )}
-                                           
+                                            
+                                            {/* Link to feedback page for the last module */}
+                                            {index === workshop.modules.length - 1 && (
+                                                <div style={{ marginTop: 12 }}>
+                                                    <Link
+                                                        to={`/feedback/${workshop.id}/${index + 1}`}
+                                                        className="module-feedback-link"
+                                                        state={{ from: `/workshops/${workshop.id}` }}
+                                                    >
+                                                        Leave Module Feedback →
+                                                    </Link>
+                                                </div>
+                                            )}
                                         </div>
                                     ))}
                                 </div>
