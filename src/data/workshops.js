@@ -31,7 +31,7 @@ const workshopsData = [
                     // IMPORTANT: Replace 'dQw4w9WgXcQ' with an actual YouTube video ID
                     videoId: 'QpJSf-3TPfA' 
                 },
-                { type: 'article', name: 'Core Concepts Overview', duration: '20 min read' },
+                { type: 'article', name: 'Core Concepts Overview', duration: '20 min read', content: '<h2>Core Concepts Overview</h2><p>This article summarizes advanced React concepts covered in this module: custom hooks, memoization, context patterns, and performance optimization techniques. Read through examples of how to extract reusable logic into hooks, when to use useMemo/useCallback to prevent unnecessary renders, and patterns for structuring context providers for scalable apps.</p>' },
                 { 
                     type: 'video', 
                     name: 'Building a Custom Hook', 
@@ -43,7 +43,7 @@ const workshopsData = [
         { 
             title: 'Module 2: Context API vs. Redux', 
             lessons: [
-                { type: 'article', name: 'Understanding Global State', duration: '15 min read' },
+                { type: 'article', name: 'Understanding Global State', duration: '15 min read', content: '<h2>Understanding Global State</h2><p>This article compares approaches to managing shared state in React applications. It explains the trade-offs between Context API for lightweight sharing and Redux for predictable, testable state in large apps. It also covers patterns like selectors, immutability, and when to colocate state versus lifting it.</p>' },
                 { 
                     type: 'video', 
                     name: 'Deep Dive into Context API', 
@@ -51,7 +51,6 @@ const workshopsData = [
                     videoId: 'QpJSf-3TPfA' 
                 },
                 { type: 'quiz', name: 'Module 2 Quiz', duration: '10 questions' },
-                
             ]
         },
     ]
@@ -85,7 +84,7 @@ const workshopsData = [
                     duration: '10 min',
                     videoId: 'QpJSf-3TPfA' 
                 },
-                { type: 'article', name: 'User Personas and Scenarios', duration: '15 min read' },
+                { type: 'article', name: 'User Personas and Scenarios', duration: '15 min read', content: '<h2>User Personas & Scenarios</h2><p>User personas are fictional characters that represent segments of your real users. This article walks through creating personas based on user research, identifying needs and pain points, and turning those into scenarios that guide design decisions. Use personas to prioritize features and design tests that reflect real user goals.</p>' },
             ]
         },
         { 
@@ -97,7 +96,7 @@ const workshopsData = [
                     duration: '20 min',
                     videoId: 'QpJSf-3TPfA' 
                 },
-                { type: 'article', name: 'Tools and Techniques', duration: '10 min read' },
+                { type: 'article', name: 'Tools and Techniques', duration: '10 min read', content: '<h2>Tools and Techniques</h2><p>This article covers popular wireframing and prototyping tools like Figma, Sketch, and Adobe XD. Focus on the importance of low-fidelity sketches for early validation, then move to interactive prototypes for usability testing. It also outlines best practices for organizing artboards and sharing prototypes for review.</p>' },
                 { type: 'quiz', name: 'Module 2 Quiz', duration: '8 questions' },
             ]
         },
@@ -132,7 +131,7 @@ const workshopsData = [
                     duration: '15 min',
                     videoId: 'QpJSf-3TPfA' 
                 },
-                { type: 'article', name: 'Choosing the Right Font Pairings', duration: '10 min read' },
+                { type: 'article', name: 'Choosing the Right Font Pairings', duration: '10 min read', content: '<h2>Choosing the Right Font Pairings</h2><p>Typography sets tone and readability. This article explains how to pair fonts for contrast and harmony, choose sizes for hierarchy, and test legibility across devices. It includes tips on web-safe fonts, variable fonts, and accessibility considerations.</p>' },
             ]
         },
         { 
@@ -179,8 +178,8 @@ const workshopsData = [
                     duration: '15 min',
                     videoId: 'QpJSf-3TPfA' 
                 },
-                { type: 'article', name: 'Choosing the Right Font Pairings', duration: '10 min read' },
-                { type: 'quiz', name: 'Module 2 Quiz', duration: '8 questions' },
+                { type: 'article', name: 'Choosing the Right Font Pairings', duration: '10 min read', content: '<h2>Choosing the Right Font Pairings</h2><p>Typography sets tone and readability. This article explains how to pair fonts for contrast and harmony, choose sizes for hierarchy, and test legibility across devices. It includes tips on web-safe fonts, variable fonts, and accessibility considerations.</p>' },
+                { type: 'quiz', name: 'Module 1 Quiz', duration: '8 questions' },
             ]
         },
         { 

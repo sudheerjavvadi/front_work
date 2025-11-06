@@ -15,6 +15,7 @@ import AdminDashboard from './components/AdminDashboard';
 import WorkshopDetailPage from './components/WorkshopDetailPage';
 import MyRegistrationsPage from './components/MyRegistrationsPage'; 
 import ExamPage from './components/ExamPage'; 
+import ArticlePage from './components/ArticlePage';
 
 // Global Stylesheet
 import './index.css'; 
@@ -60,6 +61,7 @@ const Layout = () => {
                     
                     {/* Exam/Quiz Route */}
                     <Route path="/exam/:workshopId/module/:moduleId" element={<ExamPage />} /> 
+                    <Route path="/reading/:workshopId/module/:moduleId/lesson/:lessonIndex" element={<ArticlePage />} />
                     
                     {/* Authentication Routes */}
                     <Route path="/login" element={<LoginPage />} />

@@ -230,6 +230,13 @@ const WorkshopDetailPage = () => {
                                                             >
                                                                 ▶️ Play Video
                                                             </button>
+                                                        ) : lesson.type === 'article' ? (
+                                                            <Link
+                                                                to={`/reading/${workshop.id}/module/${index + 1}/lesson/${lessonIndex}`}
+                                                                className="read-article-link"
+                                                            >
+                                                                📖 Read
+                                                            </Link>
                                                         ) : (
                                                             <span className="lesson-duration">{lesson.duration}</span>
                                                         )}
