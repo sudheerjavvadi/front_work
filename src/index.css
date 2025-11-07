@@ -5,6 +5,7 @@
   --text-dark: #333;
   --text-light: #666;
   --border-color: #ddd;
+/* ------------------------------------------- */
   --background-light: #f9f9f9;
   --card-border-radius: 8px;
   --shadow-light: 0 2px 5px rgba(0, 0, 0, 0.05);
@@ -1793,3 +1794,92 @@ body {
     justify-content: flex-end;
     margin-bottom: 20px;
 }
+/* ------------------------------------------- */
+/* --- ADDITIONAL ABOUT PAGE STYLES (AVATARS, GRID, ACTIONS) --- */
+/* ------------------------------------------- */
+
+.about-page {
+    padding-top: 40px;
+    padding-bottom: 80px;
+}
+
+.hero-actions {
+    margin-top: 18px;
+    display: flex;
+    gap: 12px;
+}
+
+.outline-button {
+    background: #fff;
+    color: var(--text-dark);
+    border: 1px solid var(--border-color);
+    box-shadow: none;
+}
+
+.team-card {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.team-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #f3e8ff, #e8f4ff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    color: var(--primary-color);
+    font-size: 1.05rem;
+    flex-shrink: 0;
+}
+
+.team-info .team-names {
+    margin: 6px 0 0 0;
+    font-weight: 700;
+}
+
+.muted-text {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.stat-item {
+    text-align: center;
+}
+.stat-value {
+    font-size: 1.2rem;
+    font-weight: 800;
+    margin: 0;
+}
+
+.section-subtitle {
+    margin-top: 20px;
+    font-size: 1.15rem;
+    color: var(--text-dark);
+    padding-left: 8px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.section-list {
+    margin-top: 12px;
+    line-height: 1.8;
+}
+
+@media (max-width: 600px) {
+    .tech-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* End additional about styles */

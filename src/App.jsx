@@ -17,6 +17,8 @@ import MyRegistrationsPage from './components/MyRegistrationsPage';
 import ExamPage from './components/ExamPage'; 
 import ArticlePage from './components/ArticlePage';
 import FeedbackPage from './components/FeedbackPage';
+import AboutUs from './components/AboutUs';
+import FooterCustom from './components/FooterCustom';
 
 // Global Stylesheet
 import './index.css'; 
@@ -64,6 +66,7 @@ const Layout = () => {
                     <Route path="/exam/:workshopId/module/:moduleId" element={<ExamPage />} /> 
                     <Route path="/reading/:workshopId/module/:moduleId/lesson/:lessonIndex" element={<ArticlePage />} />
                     <Route path="/feedback/:workshopId/:moduleId" element={<FeedbackPage />} />
+                    <Route path="/about" element={<AboutUs />} />
                     
                     {/* Authentication Routes */}
                     <Route path="/login" element={<LoginPage />} />
@@ -79,7 +82,9 @@ const Layout = () => {
                     {/* Catch-all for 404 */}
                     <Route path="*" element={<h1>404 Not Found</h1>} />
                 </Routes>
-            </main>
+      </main>
+      {/* Footer shown on non-admin routes */}
+      {!isAdminRoute && <FooterCustom />}
         </>
     );
 }
