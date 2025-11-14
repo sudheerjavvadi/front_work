@@ -18,6 +18,10 @@ import ExamPage from './components/ExamPage';
 import ArticlePage from './components/ArticlePage';
 import FeedbackPage from './components/FeedbackPage';
 import AboutUs from './components/AboutUs';
+import ContactUs from './components/ContactUs';
+import PrivacyPolicy from './components/PrivacyPolicy';
+import AccessibilityStatement from './components/AccessibilityStatement';
+import TermsOfService from './components/TermsOfService';
 import FooterCustom from './components/FooterCustom';
 
 // Global Stylesheet
@@ -67,6 +71,10 @@ const Layout = () => {
                     <Route path="/reading/:workshopId/module/:moduleId/lesson/:lessonIndex" element={<ArticlePage />} />
                     <Route path="/feedback/:workshopId/:moduleId" element={<FeedbackPage />} />
                     <Route path="/about" element={<AboutUs />} />
+                    <Route path="/contact" element={<ContactUs />} />
+                    <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                    <Route path="/accessibility-statement" element={<AccessibilityStatement />} />
+                    <Route path="/terms-of-service" element={<TermsOfService />} />
                     
                     {/* Authentication Routes */}
                     <Route path="/login" element={<LoginPage />} />
