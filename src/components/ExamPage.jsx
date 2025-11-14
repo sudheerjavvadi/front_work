@@ -167,7 +167,7 @@ const ExamPage = () => {
                 {/* Footer Actions */}
                 <div className="exam-actions">
                     <button 
-                        onClick={handleBack} 
+                        onClick={handleBack}
                         className="back-to-workshop-button"
                     >
                         ← Back to Workshop

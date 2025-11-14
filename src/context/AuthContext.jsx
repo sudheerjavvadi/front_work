@@ -13,7 +13,15 @@ export const AuthProvider = ({ children }) => {
   const [userRole, setUserRole] = useState(null); // 'student', 'admin', or null
 
   // Registration State (Stores the list of workshop objects the user is registered for)
-  const [registrations, setRegistrations] = useState([]); 
+  const [registrations, setRegistrations] = useState(() => {
+    try {
+      const raw = localStorage.getItem('registrations');
+      return raw ? JSON.parse(raw) : [];
+    } catch (err) {
+      console.error('Failed to load registrations from localStorage', err);
+      return [];
+    }
+  });
 
   const login = (role) => {
     setIsLoggedIn(true);
@@ -49,8 +57,13 @@ export const AuthProvider = ({ children }) => {
    */
   const registerWorkshop = (workshop) => {
     if (!isRegistered(workshop.id)) {
-      // Add the full workshop object to the state
-      setRegistrations(prevRegs => [...prevRegs, workshop]);
+      const updated = [...registrations, workshop];
+      setRegistrations(updated);
+      try {
+        localStorage.setItem('registrations', JSON.stringify(updated));
+      } catch (err) {
+        console.error('Failed to persist registrations', err);
+      }
       return true;
     }
     return false;
@@ -62,10 +75,14 @@ export const AuthProvider = ({ children }) => {
    * @param {string} workshopId 
    */
   const unregisterWorkshop = (workshopId) => {
-    setRegistrations(prevRegs => 
-        // Filter out the workshop with the matching ID
-        prevRegs.filter(w => w.id !== workshopId)
-    );
+    // Remove from state and persist the updated registrations list
+    const updated = registrations.filter(w => w.id !== workshopId);
+    setRegistrations(updated);
+    try {
+      localStorage.setItem('registrations', JSON.stringify(updated));
+    } catch (err) {
+      console.error('Failed to persist updated registrations', err);
+    }
 
     // Also clear any locally stored completion state for this workshop so
     // re-registering requires completing quizzes again before generating a certificate.

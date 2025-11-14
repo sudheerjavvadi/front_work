@@ -65,30 +65,39 @@ const WorkshopDetailPage = () => {
         }
     }, [id]);
 
-    // Check if all quiz modules for this workshop are completed (stored in localStorage)
+    // Compute whether all quiz modules for this workshop are completed (stored in localStorage)
+    const computeAllQuizzesCompleted = () => {
+        try {
+            const key = 'completedModules';
+            const raw = localStorage.getItem(key);
+            const data = raw ? JSON.parse(raw) : {};
+            const completed = data[workshop?.id] || [];
+
+            const quizModuleIds = (workshop?.modules || [])
+                .map((m, idx) => (m.lessons.some(l => l.type === 'quiz') ? String(idx + 1) : null))
+                .filter(Boolean);
+
+            // If there are no quiz modules, treat as not ready for certificate
+            if (quizModuleIds.length === 0) return false;
+
+            return quizModuleIds.every(mid => completed.includes(mid));
+        } catch (err) {
+            console.error('Error checking completed modules', err);
+            return false;
+        }
+    };
+
     useEffect(() => {
-        const checkAllCompleted = () => {
-            try {
-                const key = 'completedModules';
-                const raw = localStorage.getItem(key);
-                const data = raw ? JSON.parse(raw) : {};
-                const completed = data[workshop?.id] || [];
+        setAllQuizzesCompleted(computeAllQuizzesCompleted());
 
-                const quizModuleIds = (workshop?.modules || [])
-                    .map((m, idx) => (m.lessons.some(l => l.type === 'quiz') ? String(idx + 1) : null))
-                    .filter(Boolean);
-
-                // If there are no quiz modules, treat as not ready for certificate
-                if (quizModuleIds.length === 0) return false;
-
-                return quizModuleIds.every(mid => completed.includes(mid));
-            } catch (err) {
-                console.error('Error checking completed modules', err);
-                return false;
+        // Listen to storage changes so certificate button updates across tabs
+        const onStorage = (e) => {
+            if (e.key === 'completedModules' || e.key === null) {
+                setAllQuizzesCompleted(computeAllQuizzesCompleted());
             }
         };
-
-        setAllQuizzesCompleted(checkAllCompleted());
+        window.addEventListener('storage', onStorage);
+        return () => window.removeEventListener('storage', onStorage);
     }, [workshop]);
 
     // Handle Registration Logic
@@ -103,6 +112,116 @@ const WorkshopDetailPage = () => {
             setShowSuccess(true);
             setTimeout(() => setShowSuccess(false), 3000); 
         }
+    };
+
+    // Handle certificate generation (clicked in modal)
+    const handleGenerateCertificateConfirm = () => {
+        if (!certName.trim()) return alert('Please enter a name for the certificate.');
+
+        // Try to open a new window — may be blocked by popup blockers
+        const win = window.open('', '_blank');
+        if (!win) {
+            alert('Popup blocked. Please allow popups for this site to print the certificate.');
+            return;
+        }
+
+        const issuedOn = new Date().toLocaleDateString();
+        const html = `<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Certificate of Completion</title>
+  <style>
+    body {
+      font-family: 'Georgia', serif;
+      background: #f0f0f0;
+      margin: 0;
+      padding: 20px;
+    }
+    .cert {
+      max-width: 1000px;
+      margin: 0 auto;
+      border: 15px solid #6a1b9a;
+      padding: 60px 80px;
+      background: #fff;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+    .cert h1 {
+      font-size: 48px;
+      color: #6a1b9a;
+      margin: 0 0 30px 0;
+      font-weight: normal;
+      letter-spacing: 2px;
+    }
+    .cert .intro {
+      font-size: 18px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .cert .name {
+      font-size: 42px;
+      font-weight: bold;
+      margin: 30px 0;
+      color: #000;
+      border-bottom: 3px solid #6a1b9a;
+      padding-bottom: 15px;
+    }
+    .cert .statement {
+      font-size: 18px;
+      color: #333;
+      margin: 30px 0;
+      line-height: 1.6;
+    }
+    .cert .workshop {
+      font-size: 24px;
+      font-weight: bold;
+      color: #6a1b9a;
+      margin: 15px 0;
+    }
+    .cert .date {
+      margin-top: 50px;
+      color: #555;
+      font-size: 16px;
+    }
+    .cert .seal {
+      margin-top: 40px;
+      font-size: 60px;
+    }
+  </style>
+</head>
+<body>
+  <div class="cert">
+    <h1>Certificate of Completion</h1>
+    <p class="intro">This is to certify that</p>
+    <div class="name">${certName}</div>
+    <p class="statement">has successfully completed the workshop</p>
+    <div class="workshop">${workshop.title}</div>
+    <div class="seal">★</div>
+    <div class="date">Issued on: ${issuedOn}</div>
+  </div>
+  <script>
+    setTimeout(function() {
+      window.print();
+    }, 500);
+  </script>
+</body>
+</html>`;
+
+        // Write and close document
+        try {
+            win.document.write(html);
+            win.document.close();
+            win.focus();
+        } catch (err) {
+            // In some browsers writing to the new window can fail if blocked
+            console.error('Error generating certificate:', err);
+            alert('Unable to open print window. Please try disabling popup blockers or use a different browser.');
+            setShowCertModal(false);
+            return;
+        }
+
+        setShowCertModal(false);
     };
     
     // Crucial check: if workshop is null, render a loading state (prevents crash)
@@ -122,42 +241,53 @@ const WorkshopDetailPage = () => {
 
             {/* 2. Main Workshop Content */}
             <div className="workshop-detail-container">
-                {/* Header / Hero Section */}
-                <div className="detail-hero-section">
-                    <img src={workshop.image} alt={workshop.title} className="detail-hero-image" /> 
-                    <div className="detail-hero-overlay">
-                        <p className="detail-hero-audience">{workshop.audience}</p>
-                        <h1 className="detail-hero-title">{workshop.title}</h1>
-                        <p className="detail-hero-description">{workshop.description}</p>
-                        <div className="detail-hero-meta">
-                            <span>🗓️ {workshop.scheduleDate} at {workshop.scheduleTime}</span>
-                            <span>⏱️ {workshop.duration}</span>
-                            <span>🧑‍🏫 {workshop.instructorName}</span> 
+                {/* Header with image left and info aside on the right */}
+                <div className="detail-header-card">
+                    <div className="detail-image-wrapper">
+                        <img src={workshop.image} alt={workshop.title} className="detail-image" />
+                        <div className="detail-hero-overlay">
+                            <p className="detail-hero-audience">{workshop.audience}</p>
+                            <h1 className="detail-hero-title">{workshop.title}</h1>
+                            <p className="detail-hero-description">{workshop.description}</p>
+                        </div>
+                    </div>
+
+                    <div className="detail-info-box">
+                        <div>
+                            <div className="meta-item"><strong>{workshop.scheduleDate}</strong></div>
+                            <div className="meta-item muted-text">{workshop.scheduleTime} • {workshop.duration}</div>
                         </div>
 
-                        <div className="registration-action-block">
+                        <div style={{ marginTop: 18 }}>
                             <button 
                                 onClick={handleRegister} 
                                 className={`register-button ${registrationStatus ? 'registered' : ''}`}
                                 disabled={registrationStatus}
                             >
-                                {registrationStatus ? '✔️ Already Registered' : 'Register Now'}
+                                {registrationStatus ? '✔️ Already Registered' : 'Register for Workshop'}
                             </button>
-                            {/* Generate Certificate button appears only after all quizzes are completed */}
+
+                            {/* Generate Certificate button - visible only when all quizzes completed and user is registered */}
                             {allQuizzesCompleted && registrationStatus && (
                                 <button
                                     className="generate-certificate-button"
+                                    style={{ marginTop: 12 }}
                                     onClick={() => setShowCertModal(true)}
                                 >
                                     🎓 Generate Certificate
                                 </button>
                             )}
-                            {showLoginError && (
-                                <div className="login-error-message">
-                                    <p className="error-title">Login Required</p>
-                                    <p className="error-subtitle">Please log in as a student to register.</p>
+                        </div>
+
+                        <div style={{ marginTop: 18 }}>
+                            <h4 style={{ margin: 0 }}>About the Instructor</h4>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 12 }}>
+                                <div className="instructor-avatar">{workshop.instructorName.charAt(0)}</div>
+                                <div>
+                                    <div className="instructor-name">{workshop.instructorName}</div>
+                                    <div className="instructor-expertise muted-text">{workshop.instructorTopic}</div>
                                 </div>
-                            )}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -383,17 +513,7 @@ const WorkshopDetailPage = () => {
                             <div className="cert-modal-actions" style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
                                 <button
                                     className="generate-certificate-confirm"
-                                    onClick={() => {
-                                        if (!certName.trim()) return alert('Please enter a name for the certificate.');
-
-                                        // Create a printable certificate in a new window
-                                        const win = window.open('', '_blank');
-                                        const issuedOn = new Date().toLocaleDateString();
-                                        const html = `<!doctype html><html><head><meta charset="utf-8"><title>Certificate of Completion</title><style>body{font-family:Arial,Helvetica,sans-serif;background:#f6f7fb;padding:40px} .cert{max-width:900px;margin:0 auto;border:12px solid #6a1b9a;padding:40px;background:#fff;text-align:center} .cert h1{font-size:36px;color:#6a1b9a;margin:10px 0} .cert .name{font-size:32px;font-weight:700;margin-top:20px} .cert .workshop{font-size:20px;margin-top:12px;color:#333} .cert .date{margin-top:22px;color:#555}</style></head><body><div class="cert"><h1>Certificate of Completion</h1><p>This is to certify that</p><div class="name">${certName}</div><div class="workshop">has successfully completed the workshop:<br/><strong>${workshop.title}</strong></div><div class="date">Issued on: ${issuedOn}</div></div><script>setTimeout(()=>{window.print();},500);</script></body></html>`;
-                                        win.document.write(html);
-                                        win.document.close();
-                                        setShowCertModal(false);
-                                    }}
+                                    onClick={handleGenerateCertificateConfirm}
                                     style={{
                                         padding: '10px 14px',
                                         background: '#6a1b9a',

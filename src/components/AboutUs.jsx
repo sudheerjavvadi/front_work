@@ -90,10 +90,10 @@ export default function AboutUs() {
               </div>
             </div>
 
-            <div className="about-card" style={{ marginTop: 18 }}>
-              <h4 style={{ marginTop: 0 }}>About the Website</h4>
+            <div className="about-card about-card-website">
+              <h4 className="about-card-title">About the Website</h4>
               <p className="muted-text">SkillSphere Workshops is designed to make learning interactive and application-based. Each workshop combines detailed explanations, real-time coding sessions, and participant engagement through feedback forms.</p>
-              <p className="muted-text" style={{ marginTop: 8 }}>Our vision is to expand this platform into a full-featured educational hub where students can register, collaborate, and share learning resources seamlessly.</p>
+              <p className="muted-text about-card-subtitle">Our vision is to expand this platform into a full-featured educational hub where students can register, collaborate, and share learning resources seamlessly.</p>
             </div>
           </aside>
         </div>
