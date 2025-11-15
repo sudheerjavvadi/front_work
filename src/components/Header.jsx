@@ -16,7 +16,10 @@ const Header = () => {
 
           {/* NEW: My Registrations Link (Only for Students) */}
           {isLoggedIn && userRole === 'student' && (
-            <Link to="/my-registrations" className="nav-link">              My Registrations</Link>
+            <>
+              <Link to="/my-registrations" className="nav-link">My Registrations</Link>
+              <Link to="/resources" className="nav-link">📚 Resources</Link>
+            </>
           )}
           {isLoggedIn && userRole === 'admin' && (
             <Link to="/admin" className="nav-link">              Admin</Link>

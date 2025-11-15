@@ -27,6 +27,10 @@ import StudentManagement from './components/StudentManagement';
 import AdminReports from './components/AdminReports';
 import AdminSettings from './components/AdminSettings';
 import AdminAnalytics from './components/AdminAnalytics';
+import TrainingMaterials from './components/TrainingMaterials';
+import WorkshopScheduling from './components/WorkshopScheduling';
+import RegistrationManagement from './components/RegistrationManagement';
+import PostTrainingResources from './components/PostTrainingResources';
 import FooterCustom from './components/FooterCustom';
 
 // Global Stylesheet
@@ -87,6 +91,7 @@ const Layout = () => {
                     
                     {/* Student Dashboard Route (Protected) */}
                     <Route path="/my-registrations" element={<MyRegistrationsPage />} />
+                    <Route path="/resources" element={<PostTrainingResources />} />
                     
                     {/* Admin Routes */}
                     <Route path="/admin/create-workshop" element={<CreateWorkshop />} />

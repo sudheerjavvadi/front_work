@@ -8,6 +8,9 @@ import StudentManagement from './StudentManagement';
 import AdminReports from './AdminReports';
 import AdminSettings from './AdminSettings';
 import AdminAnalytics from './AdminAnalytics';
+import TrainingMaterials from './TrainingMaterials';
+import WorkshopScheduling from './WorkshopScheduling';
+import RegistrationManagement from './RegistrationManagement';
 
 const defaultWorkshopsData = [
   { id: 'wk-1', title: "Advanced React Patterns", topic: "Technology", scheduleDate: "Aug 15, 2024", scheduleTime: "7:30 PM" },
@@ -64,7 +67,10 @@ const AdminDashboard = () => {
         <nav className="sidebar-nav">
           <Link to="/admin" className={`nav-item ${isActive('/admin')}`}>📊 Dashboard</Link>
           <Link to="/admin/analytics" className={`nav-item ${isActive('/admin/analytics')}`}>📈 Analytics</Link>
+          <Link to="/admin/registrations" className={`nav-item ${isActive('/admin/registrations')}`}>📋 Registrations</Link>
           <Link to="/admin/students" className={`nav-item ${isActive('/admin/students')}`}>👥 Students</Link>
+          <Link to="/admin/scheduling" className={`nav-item ${isActive('/admin/scheduling')}`}>📅 Scheduling</Link>
+          <Link to="/admin/materials" className={`nav-item ${isActive('/admin/materials')}`}>📚 Materials</Link>
           <Link to="/admin/workshops" className={`nav-item ${isActive('/admin/workshops')}`}>📚 Workshops</Link>
           <Link to="/admin/create-workshop" className={`nav-item ${isActive('/admin/create-workshop')}`}>➕ Create Workshop</Link>
           <Link to="/admin/reports" className={`nav-item ${isActive('/admin/reports')}`}>📄 Reports</Link>
@@ -144,8 +150,17 @@ const AdminDashboard = () => {
           {/* Admin Analytics Route */}
           <Route path="/analytics" element={<AdminAnalytics />} />
 
+          {/* Registration Management Route */}
+          <Route path="/registrations" element={<RegistrationManagement />} />
+
           {/* Student Management Route */}
           <Route path="/students" element={<StudentManagement />} />
+
+          {/* Workshop Scheduling Route */}
+          <Route path="/scheduling" element={<WorkshopScheduling />} />
+
+          {/* Training Materials Route */}
+          <Route path="/materials" element={<TrainingMaterials />} />
 
           {/* Workshops Management Route */}
           <Route path="/workshops" element={
