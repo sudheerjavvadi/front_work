@@ -19,6 +19,7 @@ const Header = () => {
             <>
               <Link to="/my-registrations" className="nav-link">My Registrations</Link>
               <Link to="/resources" className="nav-link">📚 Resources</Link>
+              <Link to="/sessions" className="nav-link">📅 Sessions</Link>
             </>
           )}
           {isLoggedIn && userRole === 'admin' && (

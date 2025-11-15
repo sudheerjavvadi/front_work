@@ -32,6 +32,9 @@ import WorkshopScheduling from './components/WorkshopScheduling';
 import RegistrationManagement from './components/RegistrationManagement';
 import PostTrainingResources from './components/PostTrainingResources';
 import FooterCustom from './components/FooterCustom';
+import SessionQnA from './components/SessionQnA';
+import LiveSessionChat from './components/LiveSessionChat';
+import Sessions from './components/Sessions';
 
 // Global Stylesheet
 import './index.css'; 
@@ -79,6 +82,8 @@ const Layout = () => {
                     <Route path="/exam/:workshopId/module/:moduleId" element={<ExamPage />} /> 
                     <Route path="/reading/:workshopId/module/:moduleId/lesson/:lessonIndex" element={<ArticlePage />} />
                     <Route path="/feedback/:workshopId/:moduleId" element={<FeedbackPage />} />
+                    <Route path="/session/:workshopId/qna" element={<SessionQnA />} />
+                    <Route path="/session/:workshopId/chat" element={<LiveSessionChat />} />
                     <Route path="/about" element={<AboutUs />} />
                     <Route path="/contact" element={<ContactUs />} />
                     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
@@ -92,6 +97,7 @@ const Layout = () => {
                     {/* Student Dashboard Route (Protected) */}
                     <Route path="/my-registrations" element={<MyRegistrationsPage />} />
                     <Route path="/resources" element={<PostTrainingResources />} />
+                    <Route path="/sessions" element={<Sessions />} />
                     
                     {/* Admin Routes */}
                     <Route path="/admin/create-workshop" element={<CreateWorkshop />} />

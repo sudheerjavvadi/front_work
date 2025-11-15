@@ -4075,3 +4075,812 @@ body {
 }
 
 /* End Training Styles */
+
+/* --- LIVE SESSION CHAT STYLES --- */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 600px;
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: var(--card-border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-light);
+}
+
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: linear-gradient(135deg, var(--primary-color), #9c27b0);
+    color: white;
+    border-bottom: 2px solid #7b1fa2;
+}
+
+.chat-header h2 {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+.online-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9em;
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    background-color: #fafafa;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.chat-messages::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+    background: #888;
+}
+
+.no-messages {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: #999;
+    font-style: italic;
+}
+
+.message {
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 5px;
+    animation: slideIn 0.3s ease-in-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.message.student {
+    background: #e3f2fd;
+    border-left: 4px solid #2196f3;
+    align-self: flex-start;
+    max-width: 85%;
+}
+
+.message.instructor {
+    background: #f3e5f5;
+    border-left: 4px solid var(--primary-color);
+    align-self: flex-start;
+    max-width: 85%;
+    font-weight: 500;
+}
+
+.message-author {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    gap: 12px;
+}
+
+.message-author strong {
+    font-size: 0.95em;
+    color: var(--text-dark);
+}
+
+.message-time {
+    font-size: 0.8em;
+    color: #999;
+    white-space: nowrap;
+}
+
+.message-text {
+    color: var(--text-dark);
+    word-wrap: break-word;
+    font-size: 0.95em;
+    line-height: 1.5;
+}
+
+.chat-form {
+    display: flex;
+    gap: 10px;
+    padding: 15px 20px;
+    border-top: 1px solid var(--border-color);
+    background: white;
+}
+
+.chat-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 0.95em;
+    font-family: inherit;
+    transition: border-color 0.2s;
+}
+
+.chat-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(106, 27, 154, 0.1);
+}
+
+.btn-send {
+    padding: 12px 24px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.btn-send:hover {
+    background: #5a1185;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(106, 27, 154, 0.3);
+}
+
+.btn-send:active {
+    transform: translateY(0);
+}
+
+.login-prompt {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: #999;
+    font-size: 1.1em;
+}
+
+/* Responsive Chat */
+@media (max-width: 768px) {
+    .chat-container {
+        height: 500px;
+    }
+
+    .chat-header {
+        padding: 15px;
+    }
+
+    .chat-header h2 {
+        font-size: 1.2em;
+    }
+
+    .message {
+        max-width: 95%;
+    }
+
+    .chat-form {
+        padding: 12px 15px;
+    }
+
+    .chat-input {
+        padding: 10px 12px;
+        font-size: 0.9em;
+    }
+
+    .btn-send {
+        padding: 10px 16px;
+        font-size: 0.9em;
+    }
+}
+
+/* End Live Chat Styles */
+
+/* --- SESSIONS PAGE STYLES --- */
+.sessions-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.sessions-layout {
+    display: flex;
+    gap: 24px;
+}
+
+.sessions-sidebar {
+    width: 220px;
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: var(--card-border-radius);
+    padding: 18px;
+    box-shadow: var(--shadow-light);
+    height: fit-content;
+}
+
+.sidebar-title {
+    margin: 0 0 12px 0;
+    color: var(--primary-color);
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sidebar-btn {
+    padding: 10px 12px;
+    border: 2px solid var(--border-color);
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.sidebar-btn.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.sessions-main {
+    flex: 1;
+}
+
+.sessions-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.sessions-header h1 {
+    font-size: 2.5em;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.sessions-header p {
+    font-size: 1.1em;
+    color: var(--text-light);
+}
+
+.login-required {
+    text-align: center;
+    padding: 60px 20px;
+    background: #f5f5f5;
+    border-radius: var(--card-border-radius);
+    border: 2px dashed var(--border-color);
+}
+
+.login-required h2 {
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    font-size: 1.8em;
+}
+
+.login-required p {
+    color: var(--text-light);
+    margin-bottom: 25px;
+    font-size: 1.05em;
+}
+
+.btn-primary {
+    display: inline-block;
+    padding: 12px 30px;
+    background: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-primary:hover {
+    background: #5a1185;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(106, 27, 154, 0.3);
+}
+
+/* Stats Cards */
+.sessions-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.stat-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--shadow-light);
+    transition: all 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+}
+
+.stat-icon {
+    font-size: 2em;
+}
+
+.stat-content {
+    flex: 1;
+}
+
+.stat-number {
+    font-size: 1.8em;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.stat-label {
+    font-size: 0.9em;
+    color: var(--text-light);
+    margin-top: 5px;
+}
+
+/* Filter Tabs */
+.sessions-filter {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 10px 20px;
+    border: 2px solid var(--border-color);
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--text-dark);
+    transition: all 0.2s;
+}
+
+.filter-btn:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.filter-btn.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* Sessions List */
+.sessions-list {
+    display: grid;
+    gap: 20px;
+}
+
+.no-sessions {
+    text-align: center;
+    padding: 60px 20px;
+    background: #f9f9f9;
+    border-radius: var(--card-border-radius);
+    color: var(--text-light);
+    font-size: 1.1em;
+}
+
+/* Session Card */
+.session-card {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: var(--card-border-radius);
+    padding: 25px;
+    box-shadow: var(--shadow-light);
+    transition: all 0.2s;
+}
+
+.session-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+    border-color: var(--primary-color);
+}
+
+.session-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    gap: 15px;
+}
+
+.session-title-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.session-title {
+    margin: 0;
+    font-size: 1.5em;
+    color: var(--text-dark);
+}
+
+.session-status {
+    font-size: 0.85em;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 12px;
+}
+
+/* Session Meta Grid */
+.session-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.meta-item {
+    display: flex;
+    gap: 12px;
+}
+
+.meta-icon {
+    font-size: 1.3em;
+}
+
+.meta-label {
+    font-size: 0.85em;
+    color: var(--text-light);
+    margin: 0;
+}
+
+.meta-value {
+    font-size: 1em;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin: 5px 0 0 0;
+}
+
+.session-description {
+    color: var(--text-light);
+    line-height: 1.6;
+    margin-bottom: 20px;
+    font-size: 0.95em;
+}
+
+/* Session Actions */
+.session-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.session-action-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.2s;
+    font-size: 0.95em;
+}
+
+.qna-btn {
+    background: #e8f5e9;
+    color: #2e7d32;
+    border: 2px solid #2e7d32;
+}
+
+.qna-btn:hover {
+    background: #2e7d32;
+    color: white;
+}
+
+.chat-btn {
+    background: #e3f2fd;
+    color: #1565c0;
+    border: 2px solid #1565c0;
+}
+
+.chat-btn:hover {
+    background: #1565c0;
+    color: white;
+}
+
+.details-btn {
+    background: #f3e5f5;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+.details-btn:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.register-btn {
+    background: #fff3e0;
+    color: #ef6c00;
+    border: 2px solid #ef6c00;
+}
+
+.register-btn:hover {
+    background: #ef6c00;
+    color: white;
+}
+
+.registered {
+    background: #e0f2f1;
+    color: #00796b;
+    border: 2px solid #00796b;
+}
+
+/* Timetable Toggle Button */
+.timetable-toggle-btn {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 24px;
+    background: white;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+    font-size: 1em;
+}
+
+.timetable-toggle-btn:hover {
+    background: var(--primary-color);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.timetable-toggle-btn.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* Timetable Section */
+.timetable-section {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: var(--card-border-radius);
+    padding: 30px;
+    box-shadow: var(--shadow-light);
+    margin-top: 20px;
+}
+
+.timetable-title {
+    font-size: 1.5em;
+    color: var(--primary-color);
+    margin-bottom: 25px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 15px;
+}
+
+.no-timetable-sessions {
+    text-align: center;
+    padding: 50px 20px;
+    color: var(--text-light);
+}
+
+.no-timetable-sessions p {
+    margin: 10px 0;
+    font-size: 1.05em;
+}
+
+.no-timetable-sessions .subtitle {
+    color: #999;
+    font-style: italic;
+    margin-top: 10px;
+}
+
+/* Timetable Table */
+.timetable-wrapper {
+    overflow-x: auto;
+}
+
+.timetable {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+.timetable thead {
+    background: linear-gradient(135deg, var(--primary-color), #9c27b0);
+    color: white;
+}
+
+.timetable th {
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.timetable td {
+    padding: 15px;
+    border-bottom: 1px solid #f0f0f0;
+    color: var(--text-dark);
+}
+
+.timetable tbody tr {
+    transition: all 0.2s;
+}
+
+.timetable tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+.timetable-row.status-upcoming {
+    border-left: 4px solid #ff9800;
+}
+
+.timetable-row.status-ongoing {
+    border-left: 4px solid #4caf50;
+    background-color: #f1f8f4;
+}
+
+.timetable-row.status-completed {
+    border-left: 4px solid #2196f3;
+    opacity: 0.8;
+}
+
+.col-title {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.col-date, .col-time, .col-duration, .col-instructor {
+    font-size: 0.95em;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+    font-size: 0.85em;
+    white-space: nowrap;
+}
+
+.col-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.quick-link {
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.qna-link {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.qna-link:hover {
+    background: #2e7d32;
+    color: white;
+}
+
+.chat-link {
+    background: #e3f2fd;
+    color: #1565c0;
+}
+
+.chat-link:hover {
+    background: #1565c0;
+    color: white;
+}
+
+/* Responsive Sessions */
+@media (max-width: 768px) {
+    .sessions-container {
+        padding: 20px 15px;
+    }
+
+    .sessions-header h1 {
+        font-size: 1.8em;
+    }
+
+    .timetable-toggle-btn {
+        width: 100%;
+        margin-top: 15px;
+    }
+
+    .timetable-section {
+        padding: 20px;
+    }
+
+    .sessions-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .session-meta {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .session-actions {
+        flex-direction: column;
+    }
+
+    .session-action-btn {
+        width: 100%;
+    }
+
+    .filter-btn {
+        padding: 8px 16px;
+        font-size: 0.9em;
+    }
+
+    .timetable-wrapper {
+        overflow-x: auto;
+    }
+
+    .timetable {
+        font-size: 0.85em;
+    }
+
+    .timetable th {
+        padding: 10px;
+    }
+
+    .timetable td {
+        padding: 10px;
+    }
+
+    .col-actions {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .quick-link {
+        padding: 4px 8px;
+        font-size: 0.75em;
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* End Sessions Page Styles */

@@ -52,6 +52,32 @@ export default function WorkshopScheduling() {
     setSchedule(updated);
     localStorage.setItem('workshopSchedules', JSON.stringify(updated));
 
+    // Also add/update a corresponding entry in `workshopSessions` so students see it
+    try {
+      const sessionsRaw = localStorage.getItem('workshopSessions');
+      const sessions = sessionsRaw ? JSON.parse(sessionsRaw) : [];
+      const newSession = {
+        id: newSchedule.id,
+        workshopId: newSchedule.workshopId,
+        title: getWorkshopName(newSchedule.workshopId),
+        date: newSchedule.date,
+        time: newSchedule.startTime,
+        duration: newSchedule.endTime ? `${newSchedule.startTime} - ${newSchedule.endTime}` : newSchedule.startTime,
+        instructor: newSchedule.instructor,
+        location: newSchedule.location,
+        capacity: newSchedule.capacity,
+        status: newSchedule.status,
+        description: '',
+        enrolled: newSchedule.enrolledCount || 0
+      };
+
+      const updatedSessions = [...sessions, newSession];
+      localStorage.setItem('workshopSessions', JSON.stringify(updatedSessions));
+      setWorkshopSessions(updatedSessions);
+    } catch (err) {
+      console.error('Failed to sync workshopSessions', err);
+    }
+
     setFormData({
       workshopId: '',
       date: '',
@@ -71,6 +97,18 @@ export default function WorkshopScheduling() {
       const updated = schedule.filter(s => s.id !== id);
       setSchedule(updated);
       localStorage.setItem('workshopSchedules', JSON.stringify(updated));
+
+      // Remove from workshopSessions as well
+      try {
+        const sessionsRaw = localStorage.getItem('workshopSessions');
+        if (sessionsRaw) {
+          const sessions = JSON.parse(sessionsRaw).filter(ss => ss.id !== id);
+          localStorage.setItem('workshopSessions', JSON.stringify(sessions));
+          setWorkshopSessions(sessions);
+        }
+      } catch (err) {
+        console.error('Failed to remove session from workshopSessions', err);
+      }
     }
   };
 
@@ -80,6 +118,18 @@ export default function WorkshopScheduling() {
     );
     setSchedule(updated);
     localStorage.setItem('workshopSchedules', JSON.stringify(updated));
+
+    // Update status in workshopSessions too
+    try {
+      const sessionsRaw = localStorage.getItem('workshopSessions');
+      if (sessionsRaw) {
+        const sessions = JSON.parse(sessionsRaw).map(ss => ss.id === id ? {...ss, status: newStatus} : ss);
+        localStorage.setItem('workshopSessions', JSON.stringify(sessions));
+        setWorkshopSessions(sessions);
+      }
+    } catch (err) {
+      console.error('Failed to sync status to workshopSessions', err);
+    }
   };
 
   const getWorkshopName = (id) => {

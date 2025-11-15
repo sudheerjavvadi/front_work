@@ -104,7 +104,10 @@ const AdminDashboard = () => {
               <h2 className="dashboard-title">Admin Dashboard</h2>
               <div className="dashboard-section-header">
                 <h3>Manage Workshops</h3>
-                <Link to="/admin/create-workshop" className="create-workshop-button">+ Create Workshop</Link>
+                <div style={{ display: 'flex', gap: 12 }}>
+                  <Link to="/admin/create-workshop" className="create-workshop-button">+ Create Workshop</Link>
+                  <Link to="/admin/scheduling" className="create-workshop-button">+ Create Training Session</Link>
+                </div>
               </div>
 
               {/* Workshop Table */}
