@@ -22,6 +22,11 @@ import ContactUs from './components/ContactUs';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import AccessibilityStatement from './components/AccessibilityStatement';
 import TermsOfService from './components/TermsOfService';
+import CreateWorkshop from './components/CreateWorkshop';
+import StudentManagement from './components/StudentManagement';
+import AdminReports from './components/AdminReports';
+import AdminSettings from './components/AdminSettings';
+import AdminAnalytics from './components/AdminAnalytics';
 import FooterCustom from './components/FooterCustom';
 
 // Global Stylesheet
@@ -82,6 +87,9 @@ const Layout = () => {
                     
                     {/* Student Dashboard Route (Protected) */}
                     <Route path="/my-registrations" element={<MyRegistrationsPage />} />
+                    
+                    {/* Admin Routes */}
+                    <Route path="/admin/create-workshop" element={<CreateWorkshop />} />
                     
                     {/* Admin Dashboard Route (Protected, uses nested routing) */}
                     {/* The /* allows AdminDashboard to handle /admin/create, /admin/settings etc. */}

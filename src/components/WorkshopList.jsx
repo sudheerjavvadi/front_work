@@ -1,5 +1,5 @@
 // src/components/WorkshopList.jsx (CORRECTED)
-import React, { useState, useMemo } from 'react'; // Import necessary hooks
+import React, { useState, useMemo, useEffect } from 'react'; // Import necessary hooks
 import WorkshopCard from './WorkshopCard';
 import SearchAndFilter from './SearchAndFilter'; 
 import workshopsData from '../data/workshops'; // The data you uploaded
@@ -12,6 +12,21 @@ const WorkshopList = () => {
     audience: ''
   });
 
+  const [allWorkshops, setAllWorkshops] = useState(workshopsData);
+
+  // Load custom workshops from localStorage
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('customWorkshops');
+      if (raw) {
+        const customWorkshops = JSON.parse(raw);
+        setAllWorkshops([...workshopsData, ...customWorkshops]);
+      }
+    } catch (err) {
+      console.error('Error loading custom workshops', err);
+    }
+  }, []);
+
   // 2. Function to update the filters state (passed to SearchAndFilter)
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
@@ -21,7 +36,7 @@ const WorkshopList = () => {
   const filteredWorkshops = useMemo(() => {
     const searchLower = filters.searchTerm.toLowerCase();
     
-    return workshopsData.filter(workshop => {
+    return allWorkshops.filter(workshop => {
       // Filter by Search Term (Title or Instructor Name)
       const matchesSearch = 
         !searchLower ||
