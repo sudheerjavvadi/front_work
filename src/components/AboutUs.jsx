@@ -16,10 +16,10 @@ export default function AboutUs() {
 
           <aside className="about-hero-aside">
             <div className="about-card team-card">
-              <div className="team-avatar">JS</div>
+              <div className="team-avatar">WF</div>
               <div className="team-info">
                 <p className="muted-text">Developed by</p>
-                <p className="team-names">J.V.N. Sudheer &amp; A.N.S. Madav</p>
+                <p className="team-names">A.N.S. Madav &amp; J.V.N.SUDHEER</p>
                 <p className="muted-text">2nd Year Students — KL University</p>
               </div>
             </div>

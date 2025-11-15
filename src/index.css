@@ -1383,6 +1383,31 @@ body {
     margin-top: 5px;
 }
 
+.error-message-toast {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    margin: 0;
+    padding: 20px;
+    background-color: #f44336; /* Red */
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transition: transform 0.3s ease-out;
+    transform: translateY(0);
+}
+
+.error-message-toast .toast-title {
+    font-weight: 700;
+    font-size: 1.1em;
+}
+
+.error-message-toast .toast-subtitle {
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
 
 /* ----------------------------------------------------- */
 /* --- NEW STYLES FOR MyRegistrationsPage.jsx & TOASTS --- */

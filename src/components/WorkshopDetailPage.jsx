@@ -104,7 +104,7 @@ const WorkshopDetailPage = () => {
     const handleRegister = () => {
         if (!isLoggedIn || userRole !== 'student') {
             setShowLoginError(true);
-            setTimeout(() => setShowLoginError(false), 3000); 
+            setTimeout(() => setShowLoginError(false), 4000); 
             return;
         }
 
@@ -340,6 +340,7 @@ const WorkshopDetailPage = () => {
                                 <h3 className="section-title">Learning Modules</h3>
                                 {!registrationStatus ? (
                                     <div className="registration-required-message">
+                                        {/* Registration is required to access modules this message is not working */}
                                         <h4>Registration Required</h4>
                                         <p>Please register for this workshop to access the learning modules.</p>
                                         <button 
@@ -443,6 +444,14 @@ const WorkshopDetailPage = () => {
                     <div className="success-message-toast">
                         <p className="toast-title">Registration Successful!</p>
                         <p className="toast-subtitle">You have been registered for **"{workshop.title}"**.</p>
+                    </div>
+                )}
+
+                {/* ERROR MESSAGE BLOCK - Login Required */}
+                {showLoginError && (
+                    <div className="error-message-toast">
+                        <p className="toast-title">Login Required</p>
+                        <p className="toast-subtitle">Please login as a student to register for this workshop.</p>
                     </div>
                 )}
                 {/* Certificate Modal */}
