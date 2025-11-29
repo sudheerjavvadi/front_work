@@ -11,6 +11,7 @@ import AdminAnalytics from './AdminAnalytics';
 import TrainingMaterials from './TrainingMaterials';
 import WorkshopScheduling from './WorkshopScheduling';
 import RegistrationManagement from './RegistrationManagement';
+import AdminResources from './AdminResources';
 
 const defaultWorkshopsData = [
   { id: 'wk-1', title: "Advanced React Patterns", topic: "Technology", scheduleDate: "Aug 15, 2024", scheduleTime: "7:30 PM" },
@@ -71,6 +72,7 @@ const AdminDashboard = () => {
           <Link to="/admin/students" className={`nav-item ${isActive('/admin/students')}`}>👥 Students</Link>
           <Link to="/admin/scheduling" className={`nav-item ${isActive('/admin/scheduling')}`}>📅 Scheduling</Link>
           <Link to="/admin/materials" className={`nav-item ${isActive('/admin/materials')}`}>📚 Materials</Link>
+          <Link to="/admin/resources" className={`nav-item ${isActive('/admin/resources')}`}>🌐 Open Resources</Link>
           <Link to="/admin/workshops" className={`nav-item ${isActive('/admin/workshops')}`}>📚 Workshops</Link>
           <Link to="/admin/create-workshop" className={`nav-item ${isActive('/admin/create-workshop')}`}>➕ Create Workshop</Link>
           <Link to="/admin/reports" className={`nav-item ${isActive('/admin/reports')}`}>📄 Reports</Link>
@@ -164,6 +166,9 @@ const AdminDashboard = () => {
 
           {/* Training Materials Route */}
           <Route path="/materials" element={<TrainingMaterials />} />
+
+          {/* Admin Open Resources */}
+          <Route path="/resources" element={<AdminResources />} />
 
           {/* Workshops Management Route */}
           <Route path="/workshops" element={

@@ -221,6 +221,22 @@ const WorkshopDetailPage = () => {
             return;
         }
 
+        // Mark workshop as completed in registration
+        try {
+            const updated = registrations.map(reg => {
+                if (reg.id === workshop.id) {
+                    return { ...reg, certificateIssued: true, status: 'completed' };
+                }
+                return reg;
+            });
+            // Update localStorage directly
+            localStorage.setItem('registrations', JSON.stringify(updated));
+            // Trigger re-render by setting state
+            window.dispatchEvent(new Event('storageChange'));
+        } catch (err) {
+            console.error('Failed to mark workshop as completed', err);
+        }
+
         setShowCertModal(false);
     };
     

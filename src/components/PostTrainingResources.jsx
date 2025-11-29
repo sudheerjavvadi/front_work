@@ -6,7 +6,9 @@ export default function PostTrainingResources() {
   const [resources, setResources] = useState([]);
   const [materials, setMaterials] = useState([]);
   const [userWorkshops, setUserWorkshops] = useState([]);
+  const [activeTab, setActiveTab] = useState('my'); // 'my' or 'open'
   const [selectedWorkshop, setSelectedWorkshop] = useState('');
+  const [selectedResource, setSelectedResource] = useState(null); // For resource detail modal
 
   useEffect(() => {
     if (!isLoggedIn) return;
@@ -18,7 +20,7 @@ export default function PostTrainingResources() {
         setMaterials(JSON.parse(materialsRaw));
       }
 
-      // Get user's workshops
+      // Get user's workshops (from registrations passed via context)
       setUserWorkshops(registrations);
 
       // Load additional resources
@@ -29,6 +31,21 @@ export default function PostTrainingResources() {
     } catch (err) {
       console.error('Error loading resources', err);
     }
+
+    // Listen for storage changes (e.g., from certificate generation)
+    const handleStorageChange = () => {
+      try {
+        const updated = localStorage.getItem('registrations');
+        if (updated) {
+          setUserWorkshops(JSON.parse(updated));
+        }
+      } catch (err) {
+        console.error('Error syncing registrations', err);
+      }
+    };
+
+    window.addEventListener('storageChange', handleStorageChange);
+    return () => window.removeEventListener('storageChange', handleStorageChange);
   }, [isLoggedIn, registrations]);
 
   const getWorkshopName = (id) => {
@@ -40,6 +57,7 @@ export default function PostTrainingResources() {
   };
 
   const getFilteredMaterials = () => {
+    // When user selects a workshop, filter materials for that workshop
     if (!selectedWorkshop) return materials;
     return materials.filter(m => m.workshopId === selectedWorkshop);
   };
@@ -63,78 +81,138 @@ export default function PostTrainingResources() {
   const filteredMaterials = getFilteredMaterials();
   const filteredResources = getFilteredResources();
 
+  // Determine which of the user's registrations are completed/certified
+  const myCompletedWorkshops = userWorkshops.filter(w => {
+    return w && (w.status === 'completed' || w.completed === true || w.certificateIssued === true);
+  });
+
+  const myCompletedIds = myCompletedWorkshops.map(w => w.workshopId || w.id);
+
   return (
-    <div className="post-training-container">
-      <h1 className="page-title">📚 Post-Training Resources</h1>
-      
-      <p className="subtitle">
-        Access comprehensive learning materials and resources for your completed workshops
-      </p>
-
-      {/* Workshop Filter */}
-      <div className="filter-section">
-        <h3>Filter by Workshop:</h3>
-        <div className="workshop-filter">
-          <button 
-            className={`filter-btn ${selectedWorkshop === '' ? 'active' : ''}`}
-            onClick={() => setSelectedWorkshop('')}
+    <div className="post-training-container layout-with-sidebar">
+      <aside className="resources-sidebar">
+        <h3>Resources</h3>
+        <nav>
+          <button
+            className={`sidebar-tab ${activeTab === 'my' ? 'active' : ''}`}
+            onClick={() => setActiveTab('my')}
           >
-            All Workshops ({userWorkshops.length})
+            My Resources
           </button>
-          {userWorkshops.map(workshop => (
-            <button 
-              key={workshop.workshopId}
-              className={`filter-btn ${selectedWorkshop === workshop.workshopId ? 'active' : ''}`}
-              onClick={() => setSelectedWorkshop(workshop.workshopId)}
-            >
-              {getWorkshopName(workshop.workshopId)}
-            </button>
-          ))}
+          <button
+            className={`sidebar-tab ${activeTab === 'open' ? 'active' : ''}`}
+            onClick={() => setActiveTab('open')}
+          >
+            Open Resources
+          </button>
+        </nav>
+
+        <div className="sidebar-summary">
+          <div><strong>Registered:</strong> {userWorkshops.length}</div>
+          <div><strong>Completed:</strong> {myCompletedWorkshops.length}</div>
         </div>
-      </div>
+      </aside>
 
-      {/* Training Materials Section */}
-      <section className="resources-section">
-        <h2>📄 Training Materials</h2>
-        
-        {filteredMaterials.length === 0 ? (
-          <div className="no-resources">
-            <p>No training materials available for this workshop yet.</p>
-          </div>
-        ) : (
-          <div className="materials-list">
-            {filteredMaterials.map(material => (
-              <div key={material.id} className="resource-card">
-                <div className="resource-header">
-                  <span className="resource-type">
-                    {material.type === 'document' && '📄'}
-                    {material.type === 'video' && '🎥'}
-                    {material.type === 'resource' && '📚'}
-                    {material.type === 'template' && '📋'}
-                  </span>
-                  <h3>{material.title}</h3>
-                </div>
+      <main className="resources-main">
+        <h1 className="page-title">📚 Post-Training Resources</h1>
+        <p className="subtitle">Access comprehensive learning materials and resources for your completed workshops</p>
 
-                {material.description && (
-                  <p className="resource-description">{material.description}</p>
-                )}
-
-                <div className="resource-meta">
-                  <span>📅 {material.uploadDate}</span>
-                  <span>⬇️ {material.downloads} downloads</span>
-                </div>
-
-                <button 
-                  className="btn-access"
-                  onClick={() => window.open(material.url, '_blank')}
-                >
-                  📥 Access Material
-                </button>
-              </div>
+        {/* Workshop Filter (only show user's workshops) */}
+        <div className="filter-section">
+          <h3>Filter by Workshop:</h3>
+          <div className="workshop-filter">
+            <button
+              className={`filter-btn ${selectedWorkshop === '' ? 'active' : ''}`}
+              onClick={() => setSelectedWorkshop('')}
+            >
+              All Workshops ({userWorkshops.length})
+            </button>
+            {userWorkshops.map(workshop => (
+              <button
+                key={workshop.workshopId || workshop.id}
+                className={`filter-btn ${selectedWorkshop === (workshop.workshopId || workshop.id) ? 'active' : ''}`}
+                onClick={() => setSelectedWorkshop(workshop.workshopId || workshop.id)}
+              >
+                {getWorkshopName(workshop.workshopId || workshop.id)}
+              </button>
             ))}
           </div>
+        </div>
+
+        {/* Conditional content based on tab */}
+        {activeTab === 'my' ? (
+          <section className="resources-section">
+            <h2>📄 Training Materials (My Resources)</h2>
+
+            {filteredMaterials.filter(m => myCompletedIds.length === 0 ? false : myCompletedIds.includes(m.workshopId)).length === 0 ? (
+              <div className="no-resources">
+                <p>No training materials available for your completed workshops yet.</p>
+              </div>
+            ) : (
+              <div className="materials-list">
+                {filteredMaterials
+                  .filter(m => myCompletedIds.length === 0 ? false : myCompletedIds.includes(m.workshopId))
+                  .map(material => (
+                    <div key={material.id} className="resource-card">
+                      <div className="resource-header">
+                        <span className="resource-type">
+                          {material.type === 'document' && '📄'}
+                          {material.type === 'video' && '🎥'}
+                          {material.type === 'resource' && '📚'}
+                          {material.type === 'template' && '📋'}
+                        </span>
+                        <h3>{material.title}</h3>
+                      </div>
+
+                      {material.description && (
+                        <p className="resource-description">{material.description}</p>
+                      )}
+
+                      <div className="resource-meta">
+                        <span>📅 {material.uploadDate}</span>
+                        <span>⬇️ {material.downloads} downloads</span>
+                      </div>
+
+                      <button
+                        className="btn-access"
+                        onClick={() => window.open(material.url, '_blank')}
+                      >
+                        📥 Access Material
+                      </button>
+                    </div>
+                ))}
+              </div>
+            )}
+          </section>
+        ) : (
+          <section className="resources-section">
+            <h2>🌐 Open Resources</h2>
+            {filteredResources.length === 0 ? (
+              <div className="no-resources">
+                <p>No open resources available yet. Check back later.</p>
+              </div>
+            ) : (
+              <div className="materials-list">
+                {filteredResources.map(res => (
+                  <div className="resource-card" key={res.id}>
+                    <div className="resource-header">
+                      <span className="resource-type">{res.type === 'link' ? '🔗' : '📚'}</span>
+                      <h3>{res.title}</h3>
+                    </div>
+                    {res.description && <p className="resource-description">{res.description}</p>}
+                    <div className="resource-meta">
+                      <span>📅 {res.addedDate || res.uploadDate || ''}</span>
+                    </div>
+                    <button className="btn-access" onClick={() => {
+                      setSelectedResource(res);
+                      window.open(res.url, '_blank');
+                    }}>Open Resource</button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
         )}
-      </section>
 
       {/* Additional Resources Section */}
       <section className="resources-section">
@@ -223,7 +301,7 @@ export default function PostTrainingResources() {
       <section className="resources-summary">
         <h2>📊 Your Learning Stats</h2>
         <div className="stats-grid-resources">
-          <div className="stat-item">
+        <div className="stat-item">
             <span className="stat-icon">🎓</span>
             <span className="stat-label">Workshops Completed</span>
             <span className="stat-count">{userWorkshops.length}</span>
@@ -248,6 +326,37 @@ export default function PostTrainingResources() {
           </div>
         </div>
       </section>
+      </main>
+
+      {/* Resource Detail Modal */}
+      {selectedResource && (
+        <div className="resource-modal-overlay" onClick={() => setSelectedResource(null)}>
+          <div className="resource-modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="resource-modal-close" onClick={() => setSelectedResource(null)}>✕</button>
+            
+            <h2 className="modal-title">{selectedResource.title}</h2>
+            
+            <div className="modal-subtitle">
+              {selectedResource.type === 'link' ? 'Resources' : 'Open Resources'} — {selectedResource.type}
+            </div>
+
+            <div className="modal-divider"></div>
+
+            {selectedResource.description && (
+              <p className="modal-body-text">{selectedResource.description}</p>
+            )}
+
+            <div className="modal-actions">
+              <button 
+                className="btn-close-modal" 
+                onClick={() => setSelectedResource(null)}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
